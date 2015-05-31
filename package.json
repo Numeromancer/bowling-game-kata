@@ -1,0 +1,17 @@
+{
+  "name": "bowling-game-kata",
+  "version": "0.0.0",
+  "description": "\"Bowling Game Kata ported from Java\"",
+  "main": "bowling-game-kata.js",
+  "dependencies": {
+    "debug": "~2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "~2.2.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "\"Tim Schaeffer\"",
+  "license": "BSD-2-Clause"
+}
