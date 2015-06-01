@@ -28,6 +28,20 @@ describe("Game", function() {
         game.roll(5);
         assert.equal(game.score(), 10);
     });
+    it("roll 5 after spare should give score of 20", function() {
+        var game = new bowling.Game();
+        game.roll(5);
+        game.roll(5);
+        game.roll(5);
+        assert.equal(game.score(), 20);
+    });
+    it("roll 4 after spare should give score of 18", function() {
+        var game = new bowling.Game();
+        game.roll(5);
+        game.roll(5);
+        game.roll(4);
+        assert.equal(game.score(), 18);
+    });
     it("current-frame should be 1 after two rolls", function() {
         var game = new bowling.Game();
         game.roll(0);
