@@ -62,10 +62,16 @@ describe("Game", function() {
         game.roll(10);
         assert.equal(game.score(), 30);
     });
-    it("score should be 280 after ten rolls of 10", function() {
+    it("score should be 270 after ten rolls of 10", function() {
         var game = new bowling.Game();
         var i = 0;
         while(i++ < 10) { game.roll(10); }
-        assert.equal(game.score(), 280);
+        assert.equal(game.score(), 270);
+    });
+    it("score should be 300 after twelve rolls of 10", function() {
+        var game = new bowling.Game();
+        var i = 0;
+        while(i++ < 12) { game.roll(10); }
+        assert.equal(game.score(), 300);
     });
 });

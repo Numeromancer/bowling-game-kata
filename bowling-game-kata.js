@@ -5,36 +5,49 @@ function add(x, y) { return x + y; }
 
 function Game() {
     this.startNextFrame = function() {
-        this.currentFrame += 1;
-        this.onNextRoll = this.onNextNextRoll;
-        this.onNextNextRoll = [];
+        debug(this.currentFrame, this.onNextRoll, this.onNextNextRoll);
+        if (this.currentFrame < 10) {
+            this.currentFrame += 1;
+        }
     };
     this.currentFrame =  0;
     this.roll = function (pins) {
         var currentFrame = this.currentFrame;
         var f = this.frames[currentFrame];
         var addToThis = function (pins) {
-            debug("add ", pins, " to frame ", currentFrame);
+            debug("addToThis:", currentFrame, pins);
             f.push(pins);
         };
-        if (currentFrame > 9) {
+        if ( currentFrame > 10 ||
+             (  currentFrame === 10 &&
+                this.frames[9][0] !== 10 ) )
+        {
             throw new Error('Game over, man!');
         }
+        debug("callbacks:", currentFrame, this.onNextRoll, this.onNextNextRoll);
         while(this.onNextRoll.length > 0) {
+            debug("handling onNextRoll");
             var func = this.onNextRoll.shift();
             func(pins);
         }
-        var total = f.reduce(add, 0) + pins;
-        f.push(pins);
-        if (f.length == 1 && pins === 10) {
-            debug("");
-            this.onNextRoll.push(addToThis);
-            this.onNextNextRoll.push(addToThis);
-        } else if (total == 10) {
-            this.onNextRoll.push(addToThis);
+        this.onNextRoll = this.onNextNextRoll;
+        this.onNextNextRoll = [];
+        if (currentFrame > 8) {
+            debug("Frame 10: ", this.frames);
         }
-        if (total == 10 || f.length === 2) {
-            this.startNextFrame();
+        if (currentFrame < 10) {
+            var total = f.reduce(add, 0) + pins;
+            f.push(pins);
+            if (total == 10 || f.length === 2) {
+                this.startNextFrame();
+            }
+            if (f.length == 1 && pins === 10) {
+                this.onNextRoll.push(addToThis);
+                this.onNextNextRoll.push(addToThis);
+                debug("strike:", currentFrame, this.onNextRoll, this.onNextNextRoll);
+            } else if (total == 10) {
+                this.onNextRoll.push(addToThis);
+            }
         }
     };
      this.score = function () {
